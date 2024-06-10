@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, send_file
+from flask import Flask, render_template, request, send_file, after_this_request
 import os
 import ebooklib
 from ebooklib import epub
@@ -45,16 +45,32 @@ def upload_file():
         if file.filename == '':
             return "No selected file"
         if file and file.filename.endswith('.epub'):
-            input_path = os.path.join('/tmp', file.filename)
-            output_path = os.path.join('/tmp', 'output.epub')
+            input_filename = file.filename
+            input_path = os.path.join('/tmp', input_filename)
+            base_name, ext = os.path.splitext(input_filename)
+            output_filename = f"{base_name}_flow{ext}"
+            output_path = os.path.join('/tmp', output_filename)
             file.save(input_path)
             process_epub(input_path, output_path)
-            return render_template('download.html', output_file='output.epub')
+            return render_template('download.html', output_file=output_filename, input_file=input_filename)
     return render_template('upload.html')
 
 @app.route('/download/<filename>')
 def download_file(filename):
-    return send_file(os.path.join('/tmp', filename), as_attachment=True)
+    output_file_path = os.path.join('/tmp', filename)
+    input_filename = request.args.get('input_file')
+    input_file_path = os.path.join('/tmp', input_filename)
+
+    @after_this_request
+    def remove_files(response):
+        try:
+            os.remove(output_file_path)
+            os.remove(input_file_path)
+        except Exception as e:
+            print(f"Error removing files {output_file_path} or {input_file_path}: {e}")
+        return response
+
+    return send_file(output_file_path, as_attachment=True)
 
 if __name__ == '__main__':
     app.run(debug=True)

@@ -5,27 +5,84 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ePubFlow</title>
     <style>
-        body { margin: 0; font-family: Arial, sans-serif; padding: 20px; }
-        .banner { background: #8a8e94; color: #fff; padding: 15px; text-align: left; position: relative; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); }
-        .banner h1 { margin: 0; display: inline-block; }
-        .content { margin-top: 20px; }
-        .file-input-wrapper { display: inline-block; position: relative; }
-        .file-input { position: absolute; left: 0; top: 0; opacity: 0; cursor: pointer; width: 100%; height: 100%; }
-        .file-input-label, button { background: #8a8e94; color: #fff; padding: 12px 20px; cursor: pointer; border: none; }
-        button:disabled { background: #ccc; cursor: not-allowed; }
-        .file-name-label { margin-top: 10px; display: none; }
-        @media (min-width: 600px) { .content { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; } }
+        body, html {
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+        .container {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+        .banner, .footer {
+            background-color: #f0f0f0;
+            color: #000000;
+            padding: 27px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        .banner h1, .footer p {
+            margin: 0;
+        }
+        .main {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+        .main h1 {
+            font-size: 2rem;
+            font-weight: bold;
+            text-align: center;
+            margin: 0 0 20px;
+        }
+        .main a {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 12px 20px;
+            border-radius: 5px;
+            text-decoration: none;
+            font-size: 1rem;
+            background-color: #848485;
+            color: #fff;
+            border: none;
+        }
+        .main a:hover {
+            background-color: #526274;
+        }
+        .text-muted {
+            color: #6c757d;
+        }
     </style>
 </head>
-  <body>
-    <div class="banner">
-        <a href="https://laar94.pythonanywhere.com/" style="color: inherit; text-decoration: none">
-        <h1>ePubFlow</h1>
-        </a>
+<body>
+    <div class="container">
+        <div class="banner">
+          
+            <a href="https://laar94.pythonanywhere.com/" style="color: inherit; text-decoration: none">
+              <h1>ePubFlow</h1>
+            </a>
+        </div>
+        <div class="main">
+            <h1>Download your file, happy reading!</h1>
+            <a href="/download/{{ output_file }}?input_file={{ input_file }}">Download</a>
+        </div>
+        <div class="footer">
+            <p class="text-muted">&copy; 2024 ePubFlow. All rights reserved.</p>
+            <a href="https://laar94.pythonanywhere.com/" style="color: inherit; text-decoration: none">
+              Go to the main page
+            </a>
+        </div>
     </div>
-    <div class="content">
-    <h1>Download your file, happy reading!</h1>
-    </div>
-    <a href="/download/{{ output_file }}?input_file={{ input_file }}">Download</a>
-  </body>
+</body>
 </html>

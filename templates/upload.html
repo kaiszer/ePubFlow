@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ePubFlow</title>
+    <style>
+        body,
+        html {
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        .container {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .header,
+        .footer {
+            background-color: #f0f0f0;
+            padding: 10px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 10px;
+            position: relative;
+        }
+
+        .main {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .donate-button {
+            margin-bottom: 20px;
+            padding: 1.3em 3em;
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 2.5px;
+            font-weight: 500;
+            color: #000;
+            background-color: #fff;
+            border: none;
+            border-radius: 45px;
+            box-shadow: 0px 8px 15px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease 0s;
+            cursor: pointer;
+            outline: none;
+            text-decoration: none;
+        }
+
+        .donate-button:hover {
+            background-color: #23c483;
+            box-shadow: 0px 15px 20px rgba(46, 229, 157, 0.4);
+            color: #fff;
+            transform: translateY(-7px);
+        }
+
+        .donate-button:active {
+            transform: translateY(-1px);
+        }
+
+        .main p {
+            max-width: 800px;
+            text-align: justify;
+            margin-bottom: 20px;
+        }
+
+        .file-input-wrapper {
+            display: inline-block;
+            position: relative;
+            margin-top: 20px;
+        }
+
+        .file-input {
+            position: absolute;
+            left: 0;
+            top: 0;
+            opacity: 0;
+            cursor: pointer;
+            width: 100%;
+            height: 100%;
+        }
+
+        .file-input-label,
+        button {
+            padding: 1.3em 3em;
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 2.5px;
+            font-weight: 500;
+            color: #000;
+            background-color: #fff;
+            border: none;
+            border-radius: 45px;
+            box-shadow: 0px 8px 15px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease 0s;
+            cursor: pointer;
+            outline: none;
+        }
+
+        .file-input-label:hover,
+        button:not(:disabled):hover {
+            background-color: #23c483;
+            box-shadow: 0px 15px 20px rgba(46, 229, 157, 0.4);
+            color: #fff;
+            transform: translateY(-7px);
+        }
+
+        .file-input-label:active,
+        button:not(:disabled):active {
+            transform: translateY(-1px);
+        }
+
+        button:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+            box-shadow: none;
+        }
+
+        .file-name-label {
+            margin-top: 10px;
+            display: none;
+            text-align: center;
+        }
+
+        .text-muted {
+            color: #6c757d;
+        }
+
+        /* Language toggle button */
+        .lang-toggle {
+            position: absolute;
+            bottom: 10px;
+            right: 20px;
+            cursor: pointer;
+            user-select: none;
+            font-weight: bold;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>ePubFlow</h1>
+            <a href="/static/contact.html" style="display: flex; align-items: center; text-decoration: none; color: inherit; gap: 4px;">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" style="width: 24px; height: 24px;">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M17.982 18.725A7.488 7.488 0 0 0 12 15.75a7.488 7.488 0 0 0-5.982 2.975m11.963 0a9 9 0 1 0-11.963 0m11.963 0A8.966 8.966 0 0 1 12 21a8.966 8.966 0 0 1-5.982-2.275M15 9.75a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
+                </svg>
+                <span>Contact</span>
+            </a>
+        </div>
+        <div class="main">
+            <a href="https://ko-fi.com/epubflow" target="_blank" class="donate-button" id="donateButton">If you like this tool, donate here</a>
+
+            <p>This is a special technique that helps readers by directing their eyes on artificial fixation points
+                while reading. Using this method the reader concentrates only on the initial letters that have been
+                highlighted, which allows the reader's brain to complete the rest of the word faster.</p>
+            <p>ePubFlow will allow you to load your epub files and transform them in such a way that each word will be
+                with its first letters in bold. This will allow you to have a smoother and more pleasant reading since
+                this modification acts as a guide so that when reading you can quickly set the next word and avoids
+                skipping words.</p>
+            <p>Just select your desired epub file and click on Flow, the tool will take a few seconds to have your file
+                ready.</p>
+            <form method="post" enctype="multipart/form-data">
+                <div class="file-input-wrapper">
+                    <label class="file-input-label">Choose File</label>
+                    <input type="file" name="file" accept=".epub" class="file-input" id="fileInput">
+                </div>
+                <div class="file-name-label" id="fileNameLabel"></div>
+                <button type="submit" id="flowButton" disabled>Flow</button>
+            </form>
+        </div>
+        <div class="footer">
+            <p class="text-muted">&copy; 2025 ePubFlow. All rights reserved.</p>
+            <div id="langToggle" class="lang-toggle">ES</div>
+        </div>
+    </div>
+    <script>
+        // Bold first two letters of each word (exclude animated text)
+        function makeFirstTwoLettersBold() {
+            document.querySelectorAll('.main p:not(.txt)').forEach(p => {
+                p.innerHTML = p.textContent.split(' ').map(word =>
+                    word.length >= 2 ? `<strong>${word.slice(0, 2)}</strong>${word.slice(2)}` : word
+                ).join(' ');
+            });
+        }
+        makeFirstTwoLettersBold();
+
+        // Language mappings
+        const enTexts = {
+            donateText: "If you like this tool, donate here",
+            discoverText: "Discover more",
+            paragraphs: [
+                "This is a special technique that helps readers by directing their eyes on artificial fixation points while reading. Using this method the reader concentrates only on the initial letters that have been highlighted, which allows the reader's brain to complete the rest of the word faster.",
+                "ePubFlow will allow you to load your epub files and transform them in such a way that each word will be with its first letters in bold. This will allow you to have a smoother and more pleasant reading since this modification acts as a guide so that when reading you can quickly set the next word and avoids skipping words.",
+                "Just select your desired epub file and click on Flow, the tool will take a few seconds to have your file ready."
+            ],
+            fileInputLabel: "Choose File",
+            flowButton: "Flow",
+            footerText: `&copy; 2025 ePubFlow. All rights reserved.`,
+            fileSelectedPrefix: "File selected: "
+        };
+
+        const esTexts = {
+            donateText: "Si te gusta esta herramienta, dona aquí",
+            discoverText: "Descubre más",
+            paragraphs: [
+                "Esta es una técnica especial que ayuda a los lectores dirigiendo la vista a puntos de fijación artificiales mientras leen. Usando este método, el lector se concentra solo en las letras iniciales que han sido resaltadas, lo que permite que el cerebro del lector complete el resto de la palabra más rápido.",
+                "ePubFlow te permitirá cargar tus archivos epub y transformarlos de tal manera que cada palabra tenga sus primeras letras en negrita. Esto te permitirá tener una lectura más fluida y agradable, ya que esta modificación actúa como una guía para que al leer puedas identificar rápidamente la siguiente palabra y evitar omitir palabras.",
+                "Solo selecciona tu archivo epub deseado y haz clic en Flow; la herramienta tardará unos segundos en preparar tu archivo."
+            ],
+            fileInputLabel: "Seleccionar archivo",
+            flowButton: "Flow",
+            footerText: `&copy; 2025 ePubFlow. Todos los derechos reservados.`,
+            fileSelectedPrefix: "Archivo seleccionado: "
+        };
+
+        let isSpanish = false;
+
+        // Handle file input change with localization
+        document.getElementById('fileInput').addEventListener('change', function () {
+            const fileNameLabel = document.getElementById('fileNameLabel');
+            const prefix = isSpanish ? esTexts.fileSelectedPrefix : enTexts.fileSelectedPrefix;
+            fileNameLabel.textContent = `${prefix}${this.files[0].name}`;
+            fileNameLabel.style.display = 'block';
+            document.getElementById('flowButton').disabled = false;
+        });
+
+        // Language toggle handler
+        const langToggle = document.getElementById('langToggle');
+        langToggle.addEventListener('click', () => {
+            isSpanish = !isSpanish;
+            const texts = isSpanish ? esTexts : enTexts;
+
+            // Update animated text
+            document.querySelector('.txt').textContent = texts.discoverText;
+
+            // Update paragraphs (skip the first one which is the animated text)
+            document.querySelectorAll('.main p:not(.txt)').forEach((p, i) => {
+                p.textContent = texts.paragraphs[i];
+            });
+            makeFirstTwoLettersBold();
+
+            // Update file input label & button
+            document.querySelector('.file-input-label').textContent = texts.fileInputLabel;
+            document.getElementById('flowButton').textContent = texts.flowButton;
+
+            // Update footer text
+            document.querySelector('.footer .text-muted').innerHTML = texts.footerText;
+
+            // Update donate button text
+            document.getElementById('donateButton').textContent = texts.donateText;
+
+            // Toggle button text
+            langToggle.textContent = isSpanish ? 'EN' : 'ES';
+        });
+    </script>
+</body>
+
+</html>

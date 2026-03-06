@@ -1,7 +1,11 @@
+from flask import Flask, render_template, request, send_file
+import os
 import ebooklib
 from ebooklib import epub
 from bs4 import BeautifulSoup
 import re
+
+app = Flask(__name__)
 
 def make_first_letters_bold(text):
     def replace(match):
@@ -10,7 +14,6 @@ def make_first_letters_bold(text):
             return f"<b>{word[0]}</b>{word[1]}"
         return f"<b>{match.group(1)}</b>{match.group(2)}"
 
-    # Use regex to find words and make the first 2 letters bold
     formatted_text = re.sub(r"(\b\w{2})(\w*)", replace, text)
     
     return formatted_text
@@ -20,26 +23,38 @@ def process_epub(input_path, output_path):
 
     for item in book.get_items():
         if isinstance(item, ebooklib.epub.EpubHtml):
-            # Decode the HTML content
             html_content = item.get_body_content().decode()
-
-            # Use Beautiful Soup to parse the HTML
             soup = BeautifulSoup(html_content, "html.parser")
 
-            # Apply the formatting to the text while preserving the HTML structure
             for element in soup.find_all(text=True):
                 if element.parent.name not in ['style', 'script']:
                     formatted_text = make_first_letters_bold(element)
                     element.replace_with(BeautifulSoup(formatted_text, 'html.parser'))
 
-            # Update the item content
             item.content = str(soup).encode('utf-8')
 
     epub.write_epub(output_path, book)
     print(f"Formatted EPUB saved to {output_path}")
 
-if __name__ == "__main__":
-    input_epub = r"C:\filename.epub"
-    output_epub = r"C:\filename_output.epub"
+@app.route('/', methods=['GET', 'POST'])
+def upload_file():
+    if request.method == 'POST':
+        if 'file' not in request.files:
+            return "No file part"
+        file = request.files['file']
+        if file.filename == '':
+            return "No selected file"
+        if file and file.filename.endswith('.epub'):
+            input_path = os.path.join('/tmp', file.filename)
+            output_path = os.path.join('/tmp', 'output.epub')
+            file.save(input_path)
+            process_epub(input_path, output_path)
+            return render_template('download.html', output_file='output.epub')
+    return render_template('upload.html')
 
-    process_epub(input_epub, output_epub)
+@app.route('/download/<filename>')
+def download_file(filename):
+    return send_file(os.path.join('/tmp', filename), as_attachment=True)
+
+if __name__ == '__main__':
+    app.run(debug=True)

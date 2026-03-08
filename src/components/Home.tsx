@@ -1,6 +1,7 @@
-import { useState, useRef, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Loader2, Download, Upload, CheckCircle2, Eye } from 'lucide-react';
+import { Loader2, Download, CheckCircle2, Eye, FileUp } from 'lucide-react';
+import { useDropzone } from 'react-dropzone';
 import { processEpub } from '../lib/epubProcessor';
 import { cn } from '../lib/utils';
 import ExampleModal from './ExampleModal';
@@ -44,7 +45,6 @@ export default function Home({ downloadUrl, outputFilename, setDownloadUrl, setO
   const [file, setFile] = useState<File | null>(null);
   const [isProcessing, setIsProcessing] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const fileInputRef = useRef<HTMLInputElement>(null);
 
   const demoText = i18n.language === 'ES' ? mobyEsText : mobyEnText;
 
@@ -54,11 +54,19 @@ export default function Home({ downloadUrl, outputFilename, setDownloadUrl, setO
     }
   }, [downloadUrl]);
 
-  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (e.target.files && e.target.files.length > 0) {
-      setFile(e.target.files[0]);
+  const onDrop = useCallback((acceptedFiles: File[]) => {
+    if (acceptedFiles && acceptedFiles.length > 0) {
+      setFile(acceptedFiles[0]);
     }
-  };
+  }, []);
+
+  const { getRootProps, getInputProps, isDragActive } = useDropzone({
+    onDrop,
+    accept: {
+      'application/epub+zip': ['.epub']
+    },
+    maxFiles: 1
+  });
 
   const handleFlow = async () => {
     if (!file) return;
@@ -103,12 +111,12 @@ export default function Home({ downloadUrl, outputFilename, setDownloadUrl, setO
         href="https://ko-fi.com/epubflow"
         target="_blank"
         rel="noreferrer"
-        className="mb-8 px-8 py-4 text-xs uppercase tracking-widest font-medium text-black bg-white rounded-full shadow-md transition-colors duration-300 hover:bg-primary-hover hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2"
+        className="mb-8 px-8 py-4 text-xs uppercase tracking-widest font-medium text-black dark:text-slate-100 bg-white dark:bg-slate-800 rounded-full shadow-md transition-colors duration-300 hover:bg-primary-hover hover:text-white dark:hover:bg-primary-hover dark:hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2"
       >
         {t('donate')}
       </a>
 
-      <div className="text-justify space-y-4 mb-8">
+      <div className="text-justify space-y-4 mb-8 text-slate-800 dark:text-slate-200 transition-colors">
         <p><BoldFirstTwoLetters text={t('p1')} /></p>
         <p><BoldFirstTwoLetters text={t('p2')} /></p>
         <p><BoldFirstTwoLetters text={t('p3')} /></p>
@@ -116,35 +124,47 @@ export default function Home({ downloadUrl, outputFilename, setDownloadUrl, setO
 
       <button
         onClick={() => setIsModalOpen(true)}
-        className="mb-8 flex items-center gap-2 px-6 py-3 font-medium text-slate-700 bg-slate-100 rounded-lg shadow-sm transition-colors hover:bg-slate-200 hover:text-slate-900 border-none cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2"
+        className="mb-8 flex items-center gap-2 px-6 py-3 font-medium text-slate-700 dark:text-slate-200 bg-slate-100 dark:bg-slate-800 rounded-lg shadow-sm transition-colors hover:bg-slate-200 hover:text-slate-900 dark:hover:bg-slate-700 dark:hover:text-slate-100 border-none cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2"
       >
         <Eye size={18} />
         {t('seeExample')}
       </button>
 
-      <div className="flex flex-col items-center gap-4">
-        <input
-          type="file"
-          accept=".epub"
-          className="hidden"
-          ref={fileInputRef}
-          onChange={handleFileChange}
-        />
-
-        <button
-          onClick={() => fileInputRef.current?.click()}
-          disabled={isProcessing}
+      <div className="flex flex-col items-center gap-4 w-full px-4">
+        <div 
+          {...getRootProps()} 
           className={cn(
-            "px-8 py-4 text-xs uppercase tracking-widest font-medium bg-white text-black rounded-full shadow-md transition-colors duration-300 flex items-center gap-2 border-none cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2",
-            isProcessing ? "opacity-50 cursor-not-allowed" : "hover:bg-primary-hover hover:text-white"
+            "w-full max-w-lg p-10 sm:p-14 border-2 border-dashed rounded-2xl flex flex-col items-center justify-center gap-4 transition-colors cursor-pointer",
+            isDragActive 
+              ? "border-primary bg-primary/10 dark:bg-primary/20" 
+              : "border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-900 hover:border-primary hover:bg-slate-50 dark:hover:bg-slate-800 shadow-sm",
+            isProcessing ? "opacity-50 cursor-not-allowed pointer-events-none" : ""
           )}
         >
-          <Upload size={16} />
-          {t('chooseFile')}
-        </button>
+          <input {...getInputProps()} />
+          
+          <div className={cn(
+            "p-4 rounded-full transition-colors duration-300",
+            isDragActive ? "bg-primary/20 text-primary dark:bg-primary/30" : "bg-slate-100 dark:bg-slate-800 text-slate-500 dark:text-slate-400"
+          )}>
+            <FileUp size={36} />
+          </div>
+          
+          <div className="text-center">
+            <p className="text-base sm:text-lg font-medium text-slate-800 dark:text-slate-200">
+              {t('dragHere')}
+            </p>
+            <p className="text-sm text-slate-500 dark:text-slate-400 mt-2">
+              {t('orClick')}
+            </p>
+            <p className="text-xs text-slate-400 dark:text-slate-500 mt-4 uppercase tracking-wider font-semibold">
+              {t('epubOnly')}
+            </p>
+          </div>
+        </div>
 
         {file && (
-          <div className="text-sm font-medium text-slate-700 flex items-center gap-2 mt-2">
+          <div className="text-sm font-medium text-slate-700 dark:text-slate-300 flex items-center gap-2 mt-2">
             <CheckCircle2 size={16} className="text-primary" />
             {t('fileSelected')} {file.name}
           </div>
@@ -156,8 +176,8 @@ export default function Home({ downloadUrl, outputFilename, setDownloadUrl, setO
           className={cn(
             "px-8 py-4 mt-4 text-xs uppercase tracking-widest font-medium rounded-full shadow-md transition-colors duration-300 flex items-center gap-2 border-none cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2",
             (!file || isProcessing)
-              ? "bg-slate-300 text-slate-500 cursor-not-allowed shadow-none"
-              : "bg-white text-black hover:bg-primary-hover hover:text-white"
+              ? "bg-slate-300 dark:bg-slate-800 text-slate-500 dark:text-slate-400 cursor-not-allowed shadow-none"
+              : "bg-white dark:bg-slate-800 text-black dark:text-slate-100 hover:bg-primary-hover hover:text-white dark:hover:bg-primary-hover"
           )}
         >
           {isProcessing ? <Loader2 size={16} className="motion-safe:animate-spin" /> : null}

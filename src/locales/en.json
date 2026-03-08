@@ -20,5 +20,8 @@
   "seeExample": "See an example",
   "exampleTitle": "ePubFlow Reading Technique",
   "originalText": "Original",
-  "transformedText": "Transformed"
+  "transformedText": "Transformed",
+  "dragHere": "Drag and drop your EPUB file here",
+  "orClick": "or click to select a file",
+  "epubOnly": "Only EPUB files are supported"
 }

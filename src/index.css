@@ -4,6 +4,9 @@
 
 @layer base {
   body {
-    @apply antialiased min-h-screen flex flex-col m-0 p-0 text-slate-900 bg-background font-sans;
+    @apply antialiased m-0 p-0 font-sans min-h-screen transition-colors duration-300 bg-slate-50 text-slate-900;
+  }
+  html.dark body {
+    @apply bg-slate-950 text-slate-100;
   }
 }

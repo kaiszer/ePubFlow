@@ -30,7 +30,7 @@ export default function App() {
   };
 
   return (
-    <div className="flex flex-col min-h-screen font-sans bg-background text-slate-900">
+    <div className="flex flex-col min-h-screen font-sans bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-slate-100 transition-colors duration-300">
       <Header 
         onHomeClick={() => { handleReset(); setView('home'); }} 
         onContactClick={() => setView('contact')} 

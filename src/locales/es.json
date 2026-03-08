@@ -26,5 +26,6 @@
   "epubOnly": "Solo se admiten archivos EPUB",
   "errorProcessing": "Error al procesar el archivo EPUB. Por favor, asegúrate de que sea un formato válido.",
   "uploadSuccess": "¡Archivo procesado exitosamente!",
-  "invalidFileType": "Tipo de archivo inválido. Por favor sube un EPUB."
+  "invalidFileType": "Tipo de archivo inválido. Por favor sube un EPUB.",
+  "supportMe": "Apóyame"
 }

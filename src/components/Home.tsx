@@ -114,15 +114,6 @@ export default function Home({ downloadUrl, outputFilename, setDownloadUrl, setO
 
   return (
     <>
-      <a
-        href="https://ko-fi.com/epubflow"
-        target="_blank"
-        rel="noreferrer"
-        className="mb-8 px-8 py-4 text-xs uppercase tracking-widest font-medium text-black dark:text-slate-100 bg-white dark:bg-slate-800 rounded-full shadow-md transition-colors duration-300 hover:bg-primary-hover hover:text-white dark:hover:bg-primary-hover dark:hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2"
-      >
-        {t('donate')}
-      </a>
-
       <div className="text-justify space-y-4 mb-8 text-slate-800 dark:text-slate-200 transition-colors">
         <p><BoldFirstTwoLetters text={t('p1')} /></p>
         <p><BoldFirstTwoLetters text={t('p2')} /></p>

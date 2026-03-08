@@ -1,0 +1,20 @@
+{
+  "contact": "Contacto",
+  "donate": "Si te gusta esta herramienta, dona aquí",
+  "p1": "Esta es una técnica especial que ayuda a los lectores dirigiendo la vista a puntos de fijación artificiales mientras leen. Usando este método, el lector se concentra solo en las letras iniciales que han sido resaltadas, lo que permite que el cerebro del lector complete el resto de la palabra más rápido.",
+  "p2": "ePubFlow te permitirá cargar tus archivos epub y transformarlos de tal manera que cada palabra tenga sus primeras letras en negrita. Esto te permitirá tener una lectura más fluida y agradable, ya que esta modificación actúa como una guía para que al leer puedas identificar rápidamente la siguiente palabra y evitar omitir palabras.",
+  "p3": "Solo selecciona tu archivo epub deseado y haz clic en Flow; la herramienta tardará unos segundos en preparar tu archivo.",
+  "chooseFile": "Seleccionar archivo",
+  "flow": "Flow",
+  "fileSelected": "Archivo seleccionado: ",
+  "processing": "Procesando tu archivo...",
+  "downloadReady": "¡Descarga tu archivo, feliz lectura!",
+  "downloadBtn": "Descargar",
+  "back": "Ir a la página principal",
+  "footer": "© 2026 ePubFlow. Todos los derechos reservados.",
+  "contactP1": "Esta herramienta es totalmente gratuita y su objetivo es animar a la gente a leer más. Es el trabajo de una sola persona y aún está en desarrollo para ofrecer formatos más compatibles.",
+  "contactP2Pre": "Si tienes alguna sugerencia puedes enviarme un correo a: ",
+  "contactP2Post": ". ¡Siéntete libre de compartir la herramienta con cualquier persona que creas que le será útil!",
+  "contactP3": "Si crees que te gustó la herramienta y quieres hacer una pequeña donación, puedes hacerlo aquí:",
+  "contactDonateBtn": "Donar"
+}

@@ -2,6 +2,7 @@ import { useState, useEffect, useCallback } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Loader2, Download, CheckCircle2, Eye, FileUp } from 'lucide-react';
 import { useDropzone } from 'react-dropzone';
+import { toast } from 'sonner';
 import { processEpub } from '../lib/epubProcessor';
 import { cn } from '../lib/utils';
 import ExampleModal from './ExampleModal';
@@ -60,8 +61,13 @@ export default function Home({ downloadUrl, outputFilename, setDownloadUrl, setO
     }
   }, []);
 
+  const onDropRejected = useCallback(() => {
+    toast.error(t('invalidFileType'));
+  }, [t]);
+
   const { getRootProps, getInputProps, isDragActive } = useDropzone({
     onDrop,
+    onDropRejected,
     accept: {
       'application/epub+zip': ['.epub']
     },
@@ -81,9 +87,10 @@ export default function Home({ downloadUrl, outputFilename, setDownloadUrl, setO
 
       setOutputFilename(newName);
       setDownloadUrl(url);
+      toast.success(t('uploadSuccess'));
     } catch (error) {
       console.error("Failed to process EPUB:", error);
-      alert("Error processing the EPUB file. Please ensure it's a valid format.");
+      toast.error(t('errorProcessing'));
     } finally {
       setIsProcessing(false);
     }

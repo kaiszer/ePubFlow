@@ -23,5 +23,8 @@
   "transformedText": "Transformado",
   "dragHere": "Arrastra y suelta tu archivo EPUB aquí",
   "orClick": "o haz clic para seleccionar un archivo",
-  "epubOnly": "Solo se admiten archivos EPUB"
+  "epubOnly": "Solo se admiten archivos EPUB",
+  "errorProcessing": "Error al procesar el archivo EPUB. Por favor, asegúrate de que sea un formato válido.",
+  "uploadSuccess": "¡Archivo procesado exitosamente!",
+  "invalidFileType": "Tipo de archivo inválido. Por favor sube un EPUB."
 }

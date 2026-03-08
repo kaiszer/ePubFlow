@@ -6,11 +6,7 @@ interface FooterProps {
 }
 
 export default function Footer({ showBackBtn, onBackClick }: FooterProps) {
-  const { t, i18n } = useTranslation();
-
-  const toggleLanguage = () => {
-    i18n.changeLanguage(i18n.language === 'ES' ? 'EN' : 'ES');
-  };
+  const { t } = useTranslation();
 
   return (
     <footer className="bg-muted dark:bg-slate-900 px-5 py-6 flex justify-between items-center relative mt-auto transition-colors duration-300">
@@ -24,13 +20,6 @@ export default function Footer({ showBackBtn, onBackClick }: FooterProps) {
           {t('back')}
         </button>
       )}
-
-      <button
-        onClick={toggleLanguage}
-        className="font-bold cursor-pointer hover:text-primary dark:text-slate-100 transition-colors text-sm px-2 py-1 select-none bg-transparent border-none p-0 m-0 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2"
-      >
-        {i18n.language === 'ES' ? 'EN' : 'ES'}
-      </button>
     </footer>
   );
 }

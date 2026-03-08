@@ -1,6 +1,7 @@
 import { useTranslation } from 'react-i18next';
 import { Mail } from 'lucide-react';
 import { ThemeToggle } from './ThemeToggle';
+import { LanguageToggle } from './LanguageToggle';
 
 interface HeaderProps {
   onHomeClick: () => void;
@@ -20,6 +21,7 @@ export default function Header({ onHomeClick, onContactClick }: HeaderProps) {
       </button>
       
       <div className="flex items-center gap-4">
+        <LanguageToggle />
         <ThemeToggle />
         <button
           onClick={onContactClick}

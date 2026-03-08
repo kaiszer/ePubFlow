@@ -8,10 +8,11 @@ import JSZip from 'jszip';
  * @returns HTML string with <b> tag wrapper matching the exact legacy python regex logic.
  */
 export const makeFirstLettersBold = (text: string): string => {
-  return text.replace(/(\b[a-zA-ZáéíóúüñÁÉÍÓÚÜÑ]{2})([a-zA-ZáéíóúüñÁÉÍÓÚÜÑ]*)/g, (_match, p1, p2) => {
-    return p1.length === 2 
-      ? `<b>${p1[0]}</b>${p1[1]}` 
-      : `<b>${p1}</b>${p2}`;
+  return text.replace(/(^|[^\p{L}\p{N}_])([\p{L}\p{N}_]{2})([\p{L}\p{N}_]*)/gu, (_match, before, p1, p2) => {
+    const word = p1 + p2;
+    return word.length === 2 
+      ? `${before}<b>${word[0]}</b>${word[1]}` 
+      : `${before}<b>${p1}</b>${p2}`;
   });
 };
 

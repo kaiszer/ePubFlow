@@ -1,0 +1,20 @@
+{
+  "contact": "Contact",
+  "donate": "If you like this tool, donate here",
+  "p1": "This is a special technique that helps readers by directing their eyes on artificial fixation points while reading. Using this method the reader concentrates only on the initial letters that have been highlighted, which allows the reader's brain to complete the rest of the word faster.",
+  "p2": "ePubFlow will allow you to load your epub files and transform them in such a way that each word will be with its first letters in bold. This will allow you to have a smoother and more pleasant reading since this modification acts as a guide so that when reading you can quickly set the next word and avoids skipping words.",
+  "p3": "Just select your desired epub file and click on Flow, the tool will take a few seconds to have your file ready.",
+  "chooseFile": "Choose File",
+  "flow": "Flow",
+  "fileSelected": "File selected: ",
+  "processing": "Processing your file...",
+  "downloadReady": "Download your file, happy reading!",
+  "downloadBtn": "Download",
+  "back": "Go to the main page",
+  "footer": "© 2026 ePubFlow. All rights reserved.",
+  "contactP1": "This tool is totally free and aims to encourage people to read more. It is the work of a single person and is still under development to offer more compatible formats.",
+  "contactP2Pre": "If you have any suggestions you can send me an email to: ",
+  "contactP2Post": ". Feel free to share the tool with anyone you think will find it useful!",
+  "contactP3": "If you think you liked the tool and want to make a small donation, you can do it here:",
+  "contactDonateBtn": "Donate"
+}

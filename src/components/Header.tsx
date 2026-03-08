@@ -11,15 +11,15 @@ export default function Header({ onHomeClick, onContactClick }: HeaderProps) {
 
   return (
     <header className="bg-muted px-5 py-3 flex justify-between items-center shadow-sm">
-      <h1 
-        className="text-2xl font-bold m-0 cursor-pointer" 
+      <button 
+        className="text-2xl font-bold m-0 cursor-pointer bg-transparent border-none p-0 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2" 
         onClick={onHomeClick}
       >
-        ePubFlow
-      </h1>
+        <h1>ePubFlow</h1>
+      </button>
       <button
         onClick={onContactClick}
-        className="flex items-center gap-2 text-inherit no-underline hover:text-primary transition-colors cursor-pointer bg-transparent border-none p-0 m-0 outline-none"
+        className="flex items-center gap-2 text-inherit no-underline hover:text-primary transition-colors cursor-pointer bg-transparent border-none p-0 m-0 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2"
       >
         <Mail size={20} />
         <span>{t('contact')}</span>

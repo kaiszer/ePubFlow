@@ -16,5 +16,9 @@
   "contactP2Pre": "If you have any suggestions you can send me an email to: ",
   "contactP2Post": ". Feel free to share the tool with anyone you think will find it useful!",
   "contactP3": "If you think you liked the tool and want to make a small donation, you can do it here:",
-  "contactDonateBtn": "Donate"
+  "contactDonateBtn": "Donate",
+  "seeExample": "See an example",
+  "exampleTitle": "ePubFlow Reading Technique",
+  "originalText": "Original",
+  "transformedText": "Transformed"
 }

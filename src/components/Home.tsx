@@ -1,8 +1,11 @@
 import { useState, useRef, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Loader2, Download, Upload, CheckCircle2 } from 'lucide-react';
+import { Loader2, Download, Upload, CheckCircle2, Eye } from 'lucide-react';
 import { processEpub } from '../lib/epubProcessor';
 import { cn } from '../lib/utils';
+import ExampleModal from './ExampleModal';
+import mobyEsText from '../assets/texts/moby_es.txt?raw';
+import mobyEnText from '../assets/texts/moby_en.txt?raw';
 
 /**
  * Highlights the first two letters of every word in the given text, 
@@ -37,10 +40,13 @@ interface HomeProps {
 }
 
 export default function Home({ downloadUrl, outputFilename, setDownloadUrl, setOutputFilename }: HomeProps) {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const [file, setFile] = useState<File | null>(null);
   const [isProcessing, setIsProcessing] = useState(false);
+  const [isModalOpen, setIsModalOpen] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
+
+  const demoText = i18n.language === 'ES' ? mobyEsText : mobyEnText;
 
   useEffect(() => {
     if (!downloadUrl) {
@@ -82,7 +88,7 @@ export default function Home({ downloadUrl, outputFilename, setDownloadUrl, setO
         <a
           href={downloadUrl}
           download={outputFilename || 'formatted.epub'}
-          className="flex items-center gap-2 px-8 py-4 text-xs uppercase tracking-widest font-medium text-black bg-white rounded-full shadow-md hover:bg-primary-hover hover:text-white hover:-translate-y-1 transition-all duration-300"
+          className="flex items-center gap-2 px-8 py-4 text-xs uppercase tracking-widest font-medium text-black bg-white rounded-full shadow-md transition-colors duration-300 hover:bg-primary-hover hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2"
         >
           <Download size={16} />
           {t('downloadBtn')}
@@ -97,7 +103,7 @@ export default function Home({ downloadUrl, outputFilename, setDownloadUrl, setO
         href="https://ko-fi.com/epubflow"
         target="_blank"
         rel="noreferrer"
-        className="mb-8 px-8 py-4 text-xs uppercase tracking-widest font-medium text-black bg-white rounded-full shadow-md hover:bg-primary-hover hover:text-white hover:-translate-y-1 transition-all duration-300"
+        className="mb-8 px-8 py-4 text-xs uppercase tracking-widest font-medium text-black bg-white rounded-full shadow-md transition-colors duration-300 hover:bg-primary-hover hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2"
       >
         {t('donate')}
       </a>
@@ -107,6 +113,14 @@ export default function Home({ downloadUrl, outputFilename, setDownloadUrl, setO
         <p><BoldFirstTwoLetters text={t('p2')} /></p>
         <p><BoldFirstTwoLetters text={t('p3')} /></p>
       </div>
+
+      <button
+        onClick={() => setIsModalOpen(true)}
+        className="mb-8 flex items-center gap-2 px-6 py-3 font-medium text-slate-700 bg-slate-100 rounded-lg shadow-sm transition-colors hover:bg-slate-200 hover:text-slate-900 border-none cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2"
+      >
+        <Eye size={18} />
+        {t('seeExample')}
+      </button>
 
       <div className="flex flex-col items-center gap-4">
         <input
@@ -121,8 +135,8 @@ export default function Home({ downloadUrl, outputFilename, setDownloadUrl, setO
           onClick={() => fileInputRef.current?.click()}
           disabled={isProcessing}
           className={cn(
-            "px-8 py-4 text-xs uppercase tracking-widest font-medium bg-white text-black rounded-full shadow-md transition-all duration-300 flex items-center gap-2 border-none outline-none cursor-pointer",
-            isProcessing ? "opacity-50 cursor-not-allowed" : "hover:bg-primary-hover hover:text-white hover:-translate-y-1"
+            "px-8 py-4 text-xs uppercase tracking-widest font-medium bg-white text-black rounded-full shadow-md transition-colors duration-300 flex items-center gap-2 border-none cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2",
+            isProcessing ? "opacity-50 cursor-not-allowed" : "hover:bg-primary-hover hover:text-white"
           )}
         >
           <Upload size={16} />
@@ -140,16 +154,23 @@ export default function Home({ downloadUrl, outputFilename, setDownloadUrl, setO
           onClick={handleFlow}
           disabled={!file || isProcessing}
           className={cn(
-            "px-8 py-4 mt-4 text-xs uppercase tracking-widest font-medium rounded-full shadow-md transition-all duration-300 flex items-center gap-2 border-none outline-none cursor-pointer",
+            "px-8 py-4 mt-4 text-xs uppercase tracking-widest font-medium rounded-full shadow-md transition-colors duration-300 flex items-center gap-2 border-none cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2",
             (!file || isProcessing)
               ? "bg-slate-300 text-slate-500 cursor-not-allowed shadow-none"
-              : "bg-white text-black hover:bg-primary-hover hover:text-white hover:-translate-y-1"
+              : "bg-white text-black hover:bg-primary-hover hover:text-white"
           )}
         >
-          {isProcessing ? <Loader2 size={16} className="animate-spin" /> : null}
+          {isProcessing ? <Loader2 size={16} className="motion-safe:animate-spin" /> : null}
           {isProcessing ? t('processing') : t('flow')}
         </button>
       </div>
+
+      {isModalOpen && (
+        <ExampleModal 
+          onClose={() => setIsModalOpen(false)} 
+          originalText={demoText} 
+        />
+      )}
     </>
   );
 }

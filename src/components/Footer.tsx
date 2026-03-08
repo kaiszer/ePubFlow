@@ -19,7 +19,7 @@ export default function Footer({ showBackBtn, onBackClick }: FooterProps) {
       {showBackBtn && (
         <button
           onClick={onBackClick}
-          className="hidden md:block absolute left-1/2 -translate-x-1/2 hover:text-slate-900 text-muted-foreground transition-colors font-medium text-sm bg-transparent border-none p-0 m-0 cursor-pointer outline-none"
+          className="hidden md:block absolute left-1/2 -translate-x-1/2 hover:text-slate-900 text-muted-foreground transition-colors font-medium text-sm bg-transparent border-none p-0 m-0 cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2"
         >
           {t('back')}
         </button>
@@ -27,7 +27,7 @@ export default function Footer({ showBackBtn, onBackClick }: FooterProps) {
 
       <button
         onClick={toggleLanguage}
-        className="font-bold cursor-pointer hover:text-primary transition-colors text-sm px-2 py-1 select-none bg-transparent border-none p-0 m-0 outline-none"
+        className="font-bold cursor-pointer hover:text-primary transition-colors text-sm px-2 py-1 select-none bg-transparent border-none p-0 m-0 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2"
       >
         {i18n.language === 'ES' ? 'EN' : 'ES'}
       </button>

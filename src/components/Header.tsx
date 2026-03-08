@@ -1,14 +1,15 @@
 import { useTranslation } from 'react-i18next';
-import { Mail } from 'lucide-react';
+import { Mail, Home as HomeIcon } from 'lucide-react';
 import { ThemeToggle } from './ThemeToggle';
 import { LanguageToggle } from './LanguageToggle';
 
 interface HeaderProps {
+  view: 'home' | 'contact';
   onHomeClick: () => void;
   onContactClick: () => void;
 }
 
-export default function Header({ onHomeClick, onContactClick }: HeaderProps) {
+export default function Header({ view, onHomeClick, onContactClick }: HeaderProps) {
   const { t } = useTranslation();
 
   return (
@@ -24,11 +25,12 @@ export default function Header({ onHomeClick, onContactClick }: HeaderProps) {
         <LanguageToggle />
         <ThemeToggle />
         <button
-          onClick={onContactClick}
-          className="flex items-center gap-2 text-inherit no-underline hover:text-primary transition-colors cursor-pointer bg-transparent border-none p-0 m-0 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 dark:text-slate-100"
+          onClick={view === 'contact' ? onHomeClick : onContactClick}
+          className="flex items-center justify-center p-2 rounded-full text-inherit no-underline hover:text-slate-900 hover:bg-slate-100 transition-colors cursor-pointer bg-transparent border-none focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 dark:text-slate-100 dark:hover:bg-slate-800 dark:hover:text-slate-100"
+          title={view === 'contact' ? t('back') : t('contact')}
+          aria-label={view === 'contact' ? t('back') : t('contact')}
         >
-          <Mail size={20} />
-          <span>{t('contact')}</span>
+          {view === 'contact' ? <HomeIcon size={20} /> : <Mail size={20} />}
         </button>
       </div>
     </header>

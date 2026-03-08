@@ -9,30 +9,6 @@ import ExampleModal from './ExampleModal';
 import mobyEsText from '../assets/texts/moby_es.txt?raw';
 import mobyEnText from '../assets/texts/moby_en.txt?raw';
 
-/**
- * Highlights the first two letters of every word in the given text, 
- * simulating the bold effect described in the tool.
- * 
- * @param text The input text to be styled
- * @returns React elements with bold tags for the first two letters of words
- */
-const BoldFirstTwoLetters = ({ text }: { text: string }) => {
-  const words = text.split(' ');
-  return (
-    <>
-      {words.map((word, i) => {
-        if (word.length >= 2) {
-          return (
-            <span key={i}>
-              <strong>{word.slice(0, 2)}</strong>{word.slice(2)}{' '}
-            </span>
-          );
-        }
-        return <span key={i}>{word} </span>;
-      })}
-    </>
-  );
-};
 
 interface HomeProps {
   downloadUrl: string | null;
@@ -115,9 +91,8 @@ export default function Home({ downloadUrl, outputFilename, setDownloadUrl, setO
   return (
     <>
       <div className="text-justify space-y-4 mb-8 text-slate-800 dark:text-slate-200 transition-colors">
-        <p><BoldFirstTwoLetters text={t('p1')} /></p>
-        <p><BoldFirstTwoLetters text={t('p2')} /></p>
-        <p><BoldFirstTwoLetters text={t('p3')} /></p>
+        <p>{t('p1')}</p>
+        <p>{t('p2')}</p>
       </div>
 
       <button

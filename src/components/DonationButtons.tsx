@@ -4,7 +4,7 @@ export function DonationButtons() {
   const { t } = useTranslation();
 
   return (
-    <div className="fixed bottom-6 right-6 flex flex-row gap-4 z-50">
+    <div className="flex flex-row gap-4">
       <a
         href="https://ko-fi.com/epubflow"
         title={t('supportMe')}

@@ -5,7 +5,6 @@ import Home from './components/Home';
 import Contact from './Contact';
 import { Toaster } from 'sonner';
 import { useTheme } from './components/ThemeProvider';
-import { DonationButtons } from './components/DonationButtons';
 
 export default function App() {
   const { theme } = useTheme();
@@ -36,8 +35,8 @@ export default function App() {
   return (
     <div className="flex flex-col min-h-screen font-sans bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-slate-100 transition-colors duration-300">
       <Toaster theme={theme} richColors position="top-center" />
-      <DonationButtons />
-      <Header 
+      <Header
+        view={view}
         onHomeClick={() => { handleReset(); setView('home'); }} 
         onContactClick={() => setView('contact')} 
       />

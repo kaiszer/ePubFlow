@@ -1,73 +1,43 @@
-# React + TypeScript + Vite
+# ePubFlow
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+**ePubFlow** is a tool designed to transform files and text by applying a lexical highlighting format that facilitates fast reading (similar to the *Bionic Reading* style). The algorithm strategically highlights the first letters of each word, artificially guiding your eyes so your brain completes the rest of the word, significantly enhancing reading speed, fluency, and comprehension.
 
-Currently, two official plugins are available:
+### Example Transformation
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+**Normal Text:**
 
-## React Compiler
+Fast reading is a useful skill that allows you to absorb information more efficiently without sacrificing reading comprehension.
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+**Text Transformed by the Script:**
 
-## Expanding the ESLint configuration
+**Fa**st **read**ing **i**s **a** **use**ful **ski**ll **th**at **all**ows **y**ou **t**o **abso**rb **inform**ation **mo**re **effici**ently **with**out **sacrif**icing **read**ing **comprehen**sion.
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+---
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+## Collaborate With Us!
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
+ePubFlow is an open source project and we would love your help to help it grow! Whether you're a developer, a designer, or just passionate about improving reading accessibility, there's a place for you:
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+- Improve the algorithm or add support for more languages/formats on the backend.
+- Help refine the design and User Experience (UX/UI) of our frontend.
+- Find and report *bugs*, or propose new ideas by opening an *Issue*.
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+**How to get started?** Fork the repository, create a new branch for your contributions, and send us your Pull Request. All help is welcome regardless of your experience level!
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+---
 
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+## Project Structure
+
+A quick guide to how this repository is structured to help you find your way around quickly:
+
+- **`/src/`**: Source code of the modern WebApp. Here live the React components, internal hooks, internal assets, and Tailwind styling configuration.
+- **`/public/`**: Public static assets for the dev server (logos, icons).
+- **`app.py` and `flask_app.py`**: The core data processing. Python scripts and the Flask backend server that process files and apply the bolding algorithm.
+- **`/templates/`, `/css/`, `/imgs/`**: HTML templates, CSS styling, and traditional assets to run the Flask views and the download generator.
+- **`tmp_clean.py`**: Utility Python script to keep the temporary file directory clean after generating the `.epub` files.
+- **`package.json` and `pnpm-lock.yaml`**: Files that manage JS dependencies and local scripts utilizing `pnpm`.
+- **`vite.config.ts`**: Configuration of the Vite bundler used to package the frontend environment.
+- **`.github/workflows/deploy.yml`**: Automated GitHub Action that compiles the React build and handles the CI/CD pipeline deployment to GitHub Pages.
+
+---
+*This project is built by combining an agile analytical Python backend with a blazing fast React and TypeScript frontend.*

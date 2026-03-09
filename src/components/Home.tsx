@@ -65,7 +65,12 @@ export default function Home({ downloadUrl, outputFilename, setDownloadUrl, setO
       setDownloadUrl(url);
       toast.success(t('uploadSuccess'));
     } catch (error) {
-      console.error("Failed to process EPUB:", error);
+      console.error("DEBUG handleFlow Error Trapped:");
+      console.error(error);
+      if (error instanceof Error) {
+        console.error(error.message);
+        console.error(error.stack);
+      }
       toast.error(t('errorProcessing'));
     } finally {
       setIsProcessing(false);

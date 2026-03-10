@@ -3,12 +3,12 @@ import { makeFirstLettersBold } from '../utils/textFormatting';
 
 /**
  * Process a given EPUB file inside the browser and return the modified EPUB as a Blob.
-
  * 
  * @param file The Epub Blob / File object uploaded by user
+ * @param intensity The Bionic Reading intensity mapping
  * @returns The new Epub File Blob formatted
  */
-export const processEpub = async (file: File): Promise<Blob> => {
+export const processEpub = async (file: File, intensity: number = 2): Promise<Blob> => {
   try {
     const zip = new JSZip();
     const loadedZip = await zip.loadAsync(file);
@@ -48,7 +48,7 @@ export const processEpub = async (file: File): Promise<Blob> => {
         // We must avoid mutating the DOM tree while walking it to NOT break the NodeWalker
         while ((currentNode = walker.nextNode())) {
           const textNode = currentNode as Text;
-          const formattedHtml = makeFirstLettersBold(textNode.textContent || '');
+          const formattedHtml = makeFirstLettersBold(textNode.textContent || '', intensity);
           if (formattedHtml !== textNode.textContent) {
              // Create a temporary HTML document to parse the string, which safely handles HTML entities like &nbsp;
              const tempHtmlDoc = new DOMParser().parseFromString(formattedHtml, 'text/html');

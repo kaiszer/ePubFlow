@@ -1,11 +1,12 @@
 import { useState, useEffect, useCallback } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Loader2, Download, CheckCircle2, Eye, FileUp } from 'lucide-react';
+import { Loader2, Download, CheckCircle2, Eye, FileUp, Settings } from 'lucide-react';
 import { useDropzone } from 'react-dropzone';
 import { toast } from 'sonner';
 import { processEpub } from '../lib/epubProcessor';
 import { cn } from '../lib/utils';
 import ExampleModal from './ExampleModal';
+import SettingsModal from './SettingsModal';
 import mobyEsText from '../assets/texts/moby_es.txt?raw';
 import mobyEnText from '../assets/texts/moby_en.txt?raw';
 
@@ -22,6 +23,8 @@ export default function Home({ downloadUrl, outputFilename, setDownloadUrl, setO
   const [file, setFile] = useState<File | null>(null);
   const [isProcessing, setIsProcessing] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isSettingsOpen, setIsSettingsOpen] = useState(false);
+  const [boldIntensity, setBoldIntensity] = useState(2);
 
   const demoText = i18n.language === 'ES' ? mobyEsText : mobyEnText;
 
@@ -54,7 +57,7 @@ export default function Home({ downloadUrl, outputFilename, setDownloadUrl, setO
     if (!file) return;
     setIsProcessing(true);
     try {
-      const resultBlob = await processEpub(file);
+      const resultBlob = await processEpub(file, boldIntensity);
       const url = URL.createObjectURL(resultBlob);
 
       const parts = file.name.split('.');
@@ -100,13 +103,23 @@ export default function Home({ downloadUrl, outputFilename, setDownloadUrl, setO
         <p>{t('p2')}</p>
       </div>
 
-      <button
-        onClick={() => setIsModalOpen(true)}
-        className="mb-8 flex items-center gap-2 px-6 py-3 font-medium text-slate-700 dark:text-slate-200 bg-slate-100 dark:bg-slate-800 rounded-lg shadow-sm transition-colors hover:bg-slate-200 hover:text-slate-900 dark:hover:bg-slate-700 dark:hover:text-slate-100 border-none cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2"
-      >
-        <Eye size={18} />
-        {t('seeExample')}
-      </button>
+      <div className="flex flex-col sm:flex-row gap-4 mb-8">
+          <button
+            onClick={() => setIsModalOpen(true)}
+            className="flex flex-1 items-center justify-center gap-2 px-6 py-3 font-medium text-slate-700 dark:text-slate-200 bg-slate-100 dark:bg-slate-800 rounded-lg shadow-sm transition-colors hover:bg-slate-200 hover:text-slate-900 dark:hover:bg-slate-700 dark:hover:text-slate-100 border-none cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2"
+          >
+            <Eye size={18} />
+            {t('seeExample')}
+          </button>
+          
+          <button
+            onClick={() => setIsSettingsOpen(true)}
+            className="flex items-center justify-center gap-2 px-6 py-3 font-medium text-slate-700 dark:text-slate-200 bg-slate-100 dark:bg-slate-800 rounded-lg shadow-sm transition-colors hover:bg-slate-200 hover:text-slate-900 dark:hover:bg-slate-700 dark:hover:text-slate-100 border-none cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2"
+          >
+            <Settings size={18} />
+            {t('settingsTitle') || "Ajustes"}
+          </button>
+      </div>
 
       <div className="flex flex-col items-center gap-4 w-full px-4">
         <div 
@@ -167,6 +180,14 @@ export default function Home({ downloadUrl, outputFilename, setDownloadUrl, setO
         <ExampleModal 
           onClose={() => setIsModalOpen(false)} 
           originalText={demoText} 
+        />
+      )}
+
+      {isSettingsOpen && (
+        <SettingsModal 
+          onClose={() => setIsSettingsOpen(false)} 
+          intensity={boldIntensity}
+          onIntensityChange={setBoldIntensity}
         />
       )}
     </>

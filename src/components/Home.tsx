@@ -5,6 +5,7 @@ import { useDropzone } from 'react-dropzone';
 import { toast } from 'sonner';
 import { processEpub } from '../lib/epubProcessor';
 import { cn } from '../lib/utils';
+import { Button } from '@/components/ui/button';
 import ExampleModal from './ExampleModal';
 import SettingsModal from './SettingsModal';
 import mobyEsText from '../assets/texts/moby_es.txt?raw';
@@ -104,21 +105,22 @@ export default function Home({ downloadUrl, outputFilename, setDownloadUrl, setO
       </div>
 
       <div className="flex flex-col sm:flex-row gap-4 mb-8">
-          <button
+          <Button
+            variant="outline"
             onClick={() => setIsModalOpen(true)}
-            className="flex flex-1 items-center justify-center gap-2 px-6 py-3 font-medium text-slate-700 dark:text-slate-200 bg-slate-100 dark:bg-slate-800 rounded-lg shadow-sm transition-colors hover:bg-slate-200 hover:text-slate-900 dark:hover:bg-slate-700 dark:hover:text-slate-100 border-none cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2"
+            className="flex-1"
           >
-            <Eye size={18} />
+            <Eye size={18} className="mr-2" />
             {t('seeExample')}
-          </button>
+          </Button>
           
-          <button
+          <Button
+            variant="outline"
             onClick={() => setIsSettingsOpen(true)}
-            className="flex items-center justify-center gap-2 px-6 py-3 font-medium text-slate-700 dark:text-slate-200 bg-slate-100 dark:bg-slate-800 rounded-lg shadow-sm transition-colors hover:bg-slate-200 hover:text-slate-900 dark:hover:bg-slate-700 dark:hover:text-slate-100 border-none cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2"
           >
-            <Settings size={18} />
+            <Settings size={18} className="mr-2" />
             {t('settingsTitle') || "Ajustes"}
-          </button>
+          </Button>
       </div>
 
       <div className="flex flex-col items-center gap-4 w-full px-4">
@@ -161,19 +163,15 @@ export default function Home({ downloadUrl, outputFilename, setDownloadUrl, setO
           </div>
         )}
 
-        <button
+        <Button
           onClick={handleFlow}
           disabled={!file || isProcessing}
-          className={cn(
-            "px-8 py-4 mt-4 text-xs uppercase tracking-widest font-medium rounded-full shadow-md transition-colors duration-300 flex items-center gap-2 border-none cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2",
-            (!file || isProcessing)
-              ? "bg-slate-300 dark:bg-slate-800 text-slate-500 dark:text-slate-400 cursor-not-allowed shadow-none"
-              : "bg-white dark:bg-slate-800 text-black dark:text-slate-100 hover:bg-primary-hover hover:text-white dark:hover:bg-primary-hover"
-          )}
+          size="lg"
+          className="mt-4 px-8 py-6 rounded-full uppercase tracking-widest"
         >
-          {isProcessing ? <Loader2 size={16} className="motion-safe:animate-spin" /> : null}
+          {isProcessing ? <Loader2 size={16} className="mr-2 motion-safe:animate-spin" /> : null}
           {isProcessing ? t('processing') : t('flow')}
-        </button>
+        </Button>
       </div>
 
       {isModalOpen && (

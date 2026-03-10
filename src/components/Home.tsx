@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from 'react';
+import { useEffect, useCallback } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Loader2, Download, CheckCircle2, Eye, FileUp, Settings } from 'lucide-react';
 import { useDropzone } from 'react-dropzone';
@@ -6,6 +6,7 @@ import { toast } from 'sonner';
 import { processEpub } from '../lib/epubProcessor';
 import { cn } from '../lib/utils';
 import { Button } from '@/components/ui/button';
+import { useAppStore } from '../features/store/useAppStore';
 import ExampleModal from './ExampleModal';
 import SettingsModal from './SettingsModal';
 import mobyEsText from '../assets/texts/moby_es.txt?raw';
@@ -21,11 +22,14 @@ interface HomeProps {
 
 export default function Home({ downloadUrl, outputFilename, setDownloadUrl, setOutputFilename }: HomeProps) {
   const { t, i18n } = useTranslation();
-  const [file, setFile] = useState<File | null>(null);
-  const [isProcessing, setIsProcessing] = useState(false);
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const [isSettingsOpen, setIsSettingsOpen] = useState(false);
-  const [boldIntensity, setBoldIntensity] = useState(2);
+  
+  const { 
+    file, setFile, 
+    isProcessing, setIsProcessing,
+    isModalOpen, setIsModalOpen,
+    isSettingsOpen, setIsSettingsOpen,
+    boldIntensity
+  } = useAppStore();
 
   const demoText = i18n.language === 'ES' ? mobyEsText : mobyEnText;
 
@@ -175,18 +179,11 @@ export default function Home({ downloadUrl, outputFilename, setDownloadUrl, setO
       </div>
 
       {isModalOpen && (
-        <ExampleModal 
-          onClose={() => setIsModalOpen(false)} 
-          originalText={demoText} 
-        />
+        <ExampleModal onClose={() => setIsModalOpen(false)} originalText={demoText} />
       )}
 
       {isSettingsOpen && (
-        <SettingsModal 
-          onClose={() => setIsSettingsOpen(false)} 
-          intensity={boldIntensity}
-          onIntensityChange={setBoldIntensity}
-        />
+        <SettingsModal onClose={() => setIsSettingsOpen(false)} />
       )}
     </>
   );

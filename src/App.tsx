@@ -5,12 +5,14 @@ import Home from './components/Home';
 import Contact from './Contact';
 import { Toaster } from 'sonner';
 import { useTheme } from './components/ThemeProvider';
+import { useAppStore } from './features/store/useAppStore';
 
 export default function App() {
   const { theme } = useTheme();
   const [view, setView] = useState<'home' | 'contact'>('home');
   const [downloadUrl, setDownloadUrl] = useState<string | null>(null);
   const [outputFilename, setOutputFilename] = useState<string | null>(null);
+  const { setFile, setIsProcessing } = useAppStore();
 
   // Cleanup object URLs to avoid memory leaks
   useEffect(() => {
@@ -30,6 +32,8 @@ export default function App() {
     }
     setDownloadUrl(null);
     setOutputFilename(null);
+    setFile(null);
+    setIsProcessing(false);
   };
 
   return (

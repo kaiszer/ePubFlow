@@ -3,17 +3,18 @@ import { X } from 'lucide-react';
 import { makeFirstLettersBold } from '../utils/textFormatting';
 import { useState } from 'react';
 
+import { useAppStore } from '../features/store/useAppStore';
+
 interface SettingsModalProps {
   onClose: () => void;
-  intensity: number;
-  onIntensityChange: (newIntensity: number) => void;
 }
 
-export default function SettingsModal({ onClose, intensity, onIntensityChange }: SettingsModalProps) {
+export default function SettingsModal({ onClose }: SettingsModalProps) {
   const { t } = useTranslation();
+  const { boldIntensity, setBoldIntensity } = useAppStore();
   
   // Local state for immediate smooth sliding, syncs up to parent when changed
-  const [localIntensity, setLocalIntensity] = useState(intensity);
+  const [localIntensity, setLocalIntensity] = useState(boldIntensity);
   
   // Highlighting test keyword
   const keywordEs = "Murciélago";
@@ -23,7 +24,7 @@ export default function SettingsModal({ onClose, intensity, onIntensityChange }:
   const handleSliderChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const val = parseInt(e.target.value, 10);
     setLocalIntensity(val);
-    onIntensityChange(val);
+    setBoldIntensity(val);
   };
 
   return (

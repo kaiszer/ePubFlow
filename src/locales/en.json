@@ -32,5 +32,8 @@
   "errorProcessing": "Error processing the EPUB file. Please ensure it's a valid format.",
   "uploadSuccess": "File processed successfully!",
   "invalidFileType": "Invalid file type. Please upload an EPUB.",
-  "supportMe": "Support me"
+  "supportMe": "Support me",
+  "coverNotAvailable": "Cover not available",
+  "enjoyFile": "Enjoy your file",
+  "downloadManualFallback": "If the download does not start automatically, click the button"
 }

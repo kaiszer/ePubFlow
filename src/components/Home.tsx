@@ -1,6 +1,6 @@
 import { useEffect, useCallback } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Loader2, Download, CheckCircle2, Eye, FileUp, Settings } from 'lucide-react';
+import { Loader2, Download, CheckCircle2, Eye, FileUp, Settings, X } from 'lucide-react';
 import { useDropzone } from 'react-dropzone';
 import { toast } from 'sonner';
 import { processEpub, extractEpubCoverAndStore } from '../lib/epubProcessor';
@@ -51,6 +51,12 @@ export default function Home({ downloadUrl, outputFilename, setDownloadUrl, setO
     toast.error(t('invalidFileType'));
   }, [t]);
 
+  const handleRemoveFile = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    setFile(null);
+    useAppStore.getState().setCoverUrl(null);
+  };
+
   const { getRootProps, getInputProps, isDragActive } = useDropzone({
     onDrop,
     onDropRejected,
@@ -73,6 +79,15 @@ export default function Home({ downloadUrl, outputFilename, setDownloadUrl, setO
 
       setOutputFilename(newName);
       setDownloadUrl(url);
+      
+      // Auto-download mechanism
+      const link = document.createElement('a');
+      link.href = url;
+      link.download = newName;
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+
       toast.success(t('uploadSuccess'));
     } catch (error) {
       console.error("DEBUG handleFlow Error Trapped:");
@@ -90,7 +105,8 @@ export default function Home({ downloadUrl, outputFilename, setDownloadUrl, setO
   if (downloadUrl) {
     return (
       <div className="flex flex-col items-center animate-in fade-in duration-500">
-        <h2 className="text-3xl font-bold mb-8">{t('downloadReady')}</h2>
+        <h2 className="text-3xl font-bold mb-4">{t('enjoyFile')}</h2>
+        <p className="text-sm text-slate-500 mb-8">{t('downloadManualFallback')}</p>
         <a
           href={downloadUrl}
           download={outputFilename || 'formatted.epub'}
@@ -110,7 +126,7 @@ export default function Home({ downloadUrl, outputFilename, setDownloadUrl, setO
         <p>{t('p2')}</p>
       </div>
 
-      <div className="flex flex-col sm:flex-row gap-4 mb-8">
+      <div className="flex flex-row gap-4 mb-8 w-full max-w-lg mx-auto">
           <Button
             variant="outline"
             onClick={() => setIsModalOpen(true)}
@@ -133,24 +149,24 @@ export default function Home({ downloadUrl, outputFilename, setDownloadUrl, setO
         <div 
           {...getRootProps()} 
           className={cn(
-            "w-full max-w-lg p-10 sm:p-14 border-2 border-dashed rounded-2xl flex flex-col items-center justify-center gap-4 transition-colors cursor-pointer",
-            isDragActive 
-              ? "border-primary bg-primary/10 dark:bg-primary/20" 
-              : "border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-900 hover:border-primary hover:bg-slate-50 dark:hover:bg-slate-800 shadow-sm",
+            "w-full max-w-lg flex flex-col items-center justify-center gap-2 transition-colors cursor-pointer rounded-2xl",
+            isDragActive ? "border-primary bg-primary/10 dark:bg-primary/20 border-2 border-dashed p-4 sm:p-8" : "",
+            (!file && !isDragActive) ? "border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-900 border-2 border-dashed p-4 sm:p-8 shadow-sm hover:border-primary hover:bg-slate-50 dark:hover:bg-slate-800" : "",
+            file ? "bg-transparent border-0 p-2" : "",
             isProcessing ? "opacity-50 cursor-not-allowed pointer-events-none" : ""
           )}
         >
           <input {...getInputProps()} />
           
           <div className={cn(
-            "p-4 rounded-full transition-colors duration-300",
+            "p-2 sm:p-4 rounded-full transition-colors duration-300 mb-2",
             isDragActive ? "bg-primary/20 text-primary dark:bg-primary/30" : "bg-slate-100 dark:bg-slate-800 text-slate-500 dark:text-slate-400",
             isProcessing && "hidden"
           )}>
-            <FileUp size={36} />
+            <FileUp className="w-6 h-6 sm:w-8 sm:h-8" />
           </div>
-          
-          <div className={cn("text-center", isProcessing && "hidden")}>
+
+          <div className={cn("text-center", (isProcessing || file) && "hidden")}>
             <p className="text-base sm:text-lg font-medium text-slate-800 dark:text-slate-200">
               {t('dragHere')}
             </p>
@@ -163,20 +179,37 @@ export default function Home({ downloadUrl, outputFilename, setDownloadUrl, setO
           </div>
         </div>
 
-        {(file && !isProcessing) && (
-             <div className="text-sm font-medium text-slate-700 dark:text-slate-300 flex items-center gap-2 mt-2">
-                 <CheckCircle2 size={16} className="text-primary" />
-                 {t('fileSelected')} {file.name}
+        {(file || isProcessing) && (
+             <div className="mt-4 flex flex-col items-center animate-in fade-in zoom-in duration-500 relative">
+                {coverUrl ? (
+                  <img 
+                    src={coverUrl} 
+                    alt="Book Cover" 
+                    className="w-32 h-48 sm:w-40 sm:h-56 object-cover rounded-md shadow-lg border border-slate-200 dark:border-slate-800"
+                  />
+                ) : (
+                  <div className="w-32 h-48 sm:w-40 sm:h-56 bg-slate-100 dark:bg-slate-800 rounded-md shadow-lg border border-slate-200 dark:border-slate-700 flex items-center justify-center p-4 text-center">
+                    <span className="text-xs sm:text-sm text-slate-400 font-medium leading-tight">
+                       {t('coverNotAvailable')}
+                    </span>
+                  </div>
+                )}
+                
+                {file && !isProcessing && (
+                  <button
+                    onClick={handleRemoveFile}
+                    className="absolute -top-3 -right-3 bg-red-100 dark:bg-red-900/40 text-red-600 dark:text-red-400 hover:bg-red-200 dark:hover:bg-red-900/60 p-1.5 rounded-full shadow-md transition-colors"
+                  >
+                    <X size={16} />
+                  </button>
+                )}
              </div>
         )}
 
-        {(file || isProcessing) && coverUrl && (
-             <div className="mt-4 flex flex-col items-center animate-in fade-in zoom-in duration-500">
-                <img 
-                  src={coverUrl} 
-                  alt="Book Cover" 
-                  className="w-32 h-48 object-cover rounded-md shadow-lg mb-4 border border-slate-200 dark:border-slate-800"
-                />
+        {(file && !isProcessing) && (
+             <div className="text-sm font-medium text-slate-700 dark:text-slate-300 flex items-center gap-2 mt-4">
+                 <CheckCircle2 size={16} className="text-primary" />
+                 {t('fileSelected')} {file.name}
              </div>
         )}
 

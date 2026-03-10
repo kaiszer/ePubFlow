@@ -1,31 +1,13 @@
 import { useTranslation } from 'react-i18next';
 import { X } from 'lucide-react';
+import { makeFirstLettersBold } from '../utils/textFormatting';
 
 interface ExampleModalProps {
   onClose: () => void;
   originalText: string;
 }
 
-/**
- * Applies the Bionic Reading highlighting effect locally for the demo logic.
- */
-const BoldFirstTwoLetters = ({ text }: { text: string }) => {
-  const words = text.split(' ');
-  return (
-    <>
-      {words.map((word, i) => {
-        if (word.length >= 2) {
-          return (
-            <span key={i}>
-              <strong>{word.slice(0, 2)}</strong>{word.slice(2)}{' '}
-            </span>
-          );
-        }
-        return <span key={i}>{word} </span>;
-      })}
-    </>
-  );
-};
+
 
 export default function ExampleModal({ onClose, originalText }: ExampleModalProps) {
   const { t } = useTranslation();
@@ -73,9 +55,10 @@ export default function ExampleModal({ onClose, originalText }: ExampleModalProp
           <div className="flex flex-col items-center">
             <h3 className="text-lg font-medium text-slate-700 dark:text-slate-300 mb-3">{t('transformedText')}</h3>
             <div className="w-full aspect-[3/4] max-h-[60vh] bg-slate-200 dark:bg-slate-800 rounded-[2rem] p-4 sm:p-6 sm:pb-12 shadow-inner border-[12px] border-slate-300 dark:border-slate-700 flex flex-col relative overflow-hidden transition-colors">
-              <div className="flex-1 bg-slate-50 dark:bg-slate-900 rounded-md overflow-y-auto p-4 sm:p-6 text-base sm:text-lg leading-relaxed text-slate-800 dark:text-slate-200 font-serif shadow-sm transition-colors">
-                <BoldFirstTwoLetters text={originalText} />
-              </div>
+              <div 
+                className="flex-1 bg-slate-50 dark:bg-slate-900 rounded-md overflow-y-auto p-4 sm:p-6 text-base sm:text-lg leading-relaxed text-slate-800 dark:text-slate-200 font-serif shadow-sm transition-colors"
+                dangerouslySetInnerHTML={{ __html: makeFirstLettersBold(originalText) }}
+              />
               
               {/* Fake Kindle Bottom Bezel */}
               <div className="absolute bottom-3 left-0 w-full flex justify-center items-center select-none pointer-events-none">

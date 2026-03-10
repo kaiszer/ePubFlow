@@ -5,6 +5,9 @@ interface AppState {
   file: File | null;
   setFile: (file: File | null) => void;
   
+  coverUrl: string | null;
+  setCoverUrl: (url: string | null) => void;
+  
   // Processing State
   isProcessing: boolean;
   setIsProcessing: (status: boolean) => void;
@@ -24,6 +27,9 @@ interface AppState {
 export const useAppStore = create<AppState>((set) => ({
   file: null,
   setFile: (file) => set({ file }),
+  
+  coverUrl: null,
+  setCoverUrl: (url) => set({ coverUrl: url }),
   
   isProcessing: false,
   setIsProcessing: (status) => set({ isProcessing: status }),

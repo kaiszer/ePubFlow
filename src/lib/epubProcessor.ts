@@ -1,5 +1,52 @@
 import JSZip from 'jszip';
 import { makeFirstLettersBold } from '../utils/textFormatting';
+import { useAppStore } from '../features/store/useAppStore';
+
+/**
+ * Silently extracts the EPUB cover from the uploaded file and commits it to Zustand global store.
+ * Safe to call implicitly on file drop.
+ */
+export const extractEpubCoverAndStore = async (file: File): Promise<void> => {
+  try {
+    const zip = new JSZip();
+    const loadedZip = await zip.loadAsync(file);
+    const parser = new DOMParser();
+
+    const rootFiles = Object.keys(loadedZip.files).filter(name => name.endsWith('.opf'));
+    if (rootFiles.length > 0) {
+      const opfData = await loadedZip.files[rootFiles[0]].async('string');
+      const opfDoc = parser.parseFromString(opfData, 'application/xml');
+      
+      const coverMeta = opfDoc.querySelector('meta[name="cover"]');
+      if (coverMeta) {
+         const coverId = coverMeta.getAttribute('content');
+         if (coverId) {
+           const coverItem = opfDoc.querySelector(`item[id="${coverId}"]`);
+           if (coverItem) {
+             const coverHref = coverItem.getAttribute('href');
+             
+             if (coverHref) {
+               const parts = rootFiles[0].split('/');
+               parts.pop();
+               const basePath = parts.length > 0 ? parts.join('/') + '/' : '';
+               const fullCoverPath = basePath + coverHref;
+               
+               const coverFile = loadedZip.files[fullCoverPath];
+               if (coverFile) {
+                  const base64Data = await coverFile.async('base64');
+                  const ext = fullCoverPath.split('.').pop()?.toLowerCase();
+                  const mime = ext === 'jpg' || ext === 'jpeg' ? 'image/jpeg' : 'image/png';
+                  useAppStore.getState().setCoverUrl(`data:${mime};base64,${base64Data}`);
+               }
+             }
+           }
+         }
+      }
+    }
+  } catch (err) {
+    console.warn("Cover extraction silently failed:", err);
+  }
+};
 
 /**
  * Process a given EPUB file inside the browser and return the modified EPUB as a Blob.

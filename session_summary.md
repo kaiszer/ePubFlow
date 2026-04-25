@@ -7,5 +7,5 @@
 
 ## Implementación de Integración Continua (CI)
 - **Objetivo:** Proteger la lógica core de conversión (formateo Biónico) contra futuras modificaciones accidentales o actualizaciones problemáticas.
-- **Acción:** Se verificaron las pruebas unitarias existentes en `src/utils/textFormatting.test.ts` asegurando que la función `makeFirstLettersBold` esté protegida. Además se implementó un flujo de GitHub Actions (`.github/workflows/ci.yml`) configurado para ejecutar `npx vitest run` bajo Node.js 20 ante cualquier `push` o `pull_request` hacia la rama `main`.
-- **Resultado:** A partir de ahora, GitHub validará que todos los tests pasen exitosamente, garantizando la estabilidad funcional de la página.
+- **Acción:** Se verificaron las pruebas unitarias existentes en `src/utils/textFormatting.test.ts` asegurando que la función `makeFirstLettersBold` esté protegida. Además se implementó un flujo de GitHub Actions (`.github/workflows/ci.yml`) configurado para ejecutar `npx vitest run` bajo Node.js 20 ante cualquier `push` o `pull_request` hacia la rama `main`. Posteriormente se sincronizó el archivo `pnpm-lock.yaml` para resolver desajustes de versiones tras las mitigaciones de seguridad, y se actualizó el flujo CI para utilizar la acción oficial `pnpm/action-setup`.
+- **Resultado:** A partir de ahora, GitHub validará nativamente las dependencias usando pnpm y garantizará que todos los tests pasen exitosamente sin errores de entorno, manteniendo la estabilidad funcional de la página.

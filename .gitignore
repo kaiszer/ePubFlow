@@ -25,3 +25,18 @@ dist-ssr
 skills-lock.json
 SKILL.md
 session_summary.md
+
+# Legacy Python / Flask Files
+app.py
+flask_app.py
+tmp_clean.py
+css/
+templates/
+imgs/
+
+# Agent/IDE directories
+.agent/
+.agents/
+
+# Lockfiles from unused package managers
+package-lock.json

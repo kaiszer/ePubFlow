@@ -1,4 +1,4 @@
-name: Validacion de Formateo Bionico
+name: Validacion de Formateo
 
 on:
   push:
